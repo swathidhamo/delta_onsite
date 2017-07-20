@@ -1,0 +1,196 @@
+<html>
+<head>
+	<title>Audio file</title>
+	<style type="text/css">
+      canvas{
+      	border: 2px solid black;
+      }
+
+
+
+	</style>
+</head>
+<body>
+ 
+ <ul>
+  <li>To make the box move say 'move up/down/left/right' or just mention the direction</li>
+  <li>To make it dissapear say vanish or hide and say appear to make it appear again </li>
+  <li>To make it change color say change color to 'any color'</li>
+  <li>To make it move faster say 'faster'</li>
+   <input type = "submit" id = "button" value = "Start Recording">
+
+ </ul>
+ <canvas id = "canvas" height = "800" width = "800"></canvas>
+
+ 
+ <script type="text/javascript">
+   var canvas = document.getElementById("canvas");
+   var ctx = canvas.getContext("2d");
+   var button = document.getElementById("button");
+   var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+   var lastColor;
+   var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+   var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+     var recognition = new webkitSpeechRecognition();
+    var speechRecognitionList = new SpeechGrammarList();
+   var colors = [ 'aqua' , 'azure' , 'beige', 'bisque', 'black', 'blue', 'brown', 'chocolate', 'coral', 'crimson', 'cyan', 'fuchsia', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'indigo', 'ivory', 'khaki', 'lavender', 'lime', 'linen', 'magenta', 'maroon', 'moccasin', 'navy', 'olive', 'orange', 'orchid', 'peru', 'pink', 'plum', 'purple', 'red', 'salmon', 'sienna', 'silver', 'snow', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet', 'white', 'yellow'];
+   var movement = ['move up','move down','move left','move right','up','down','left','right','centre','vanish','fade','appear','faster','brighter','fader'];
+   var grammar = '#JSGF V1.0; grammar colors; public <color> = ' + colors.join(' | ') + ' ;'
+   var grammer_movement=  '#JSGF V1.0; grammar movement; public <movement> = ' + movement.join(' | ') + ' ;'
+   var count;
+
+   
+
+    console.log("ent");
+
+  
+    speechRecognitionList.addFromString(grammar, 1);
+    speechRecognitionList.addFromString(grammer_movement,1)
+    recognition.grammars = speechRecognitionList;
+   
+       recognition.continuous = true;
+       //recognition.start();
+       recognition.interimResults = true;
+       //recognition.onstart = function(event){
+        //console.log("Processing sound");
+       //}
+       recognition.onresult = function(event) { 
+       console.log("it entered");
+       console.log(event); 
+       var last = event.results.length -1
+       console.log(event.results[last][0].transcript);
+       var command = event.results[last][0].transcript;
+
+       colors.forEach(function(colo){
+         var n = command.search(colo);
+         if(n!=-1){
+          console.log(colo);
+          movingBox.color = colo;
+          drawBox();
+
+         }
+       });
+
+       for(var m = 0;m<movement.length;m++){
+        var p = command.search(movement[m]);
+        if(p!=-1){
+          if(m==0||m==4){
+            movingBox.startingY -= movingBox.increment;
+          }
+          else if(m==1||m==5){
+            movingBox.startingY += movingBox.increment;
+          }
+          else if(m==2||m==6){
+            movingBox.startingX -=movingBox.increment;
+          }
+          else if(m==3||m==7){
+            movingBox.startingX += movingBox.increment;
+          }
+          else if(movement[m]=='hide'||movement[m]=='vanish'){
+            lastColor = movingBox.color;
+            console.log(lastColor)
+            movingBox.color = "white";
+            movingBox.borderColor = "white";
+
+          }
+          else if(movement[m]=='faster'){
+             movingBox.increment += 20;
+          }
+          else if(movement[m]=='appear'){
+            movingBox.color = lastColor;
+            movingBox.color = "green";
+            movingBox.borderColor = "black";
+          }
+          else if(movement[m]=='brigher'){
+            movingBox.opacity += 0.3;
+          }
+          else if(movement[m]=='fader'){
+            movingBox.opacity -= 0.3;
+          }
+      
+          else{
+            movingBox.startingX = canvas.width/2 - (movingBox.width)/2;
+            movingBox.startingY = canvas.height/2 -(movingBox.height)/2;
+          }
+          ctx.clearRect(0,0,800,800);
+          drawBox();
+        
+
+
+       }
+
+
+   }
+ 
+ }
+      recognition.start();
+        
+       recognition.onspeechend = function(){
+        recognition.stop();
+       }
+       recognition.onnomatch = function(event){
+        console.log("I dont recognize that command");
+       }
+
+    
+
+
+
+
+   function box(startingX,startingY,width,height,color,borderColor,increment,opacity){
+     this.startingX = startingX;
+     this.startingY = startingY;
+     this.width = width;
+     this.height = height;
+     this.color = color;
+     this.borderColor = borderColor;
+     this.increment  =increment;
+     this.opacity = opacity;
+   }
+   var movingBox = new box(150,150,200,200,"blue","black",40,0.5)
+
+    function drawBox(){
+      if(movingBox.startingX+movingBox.width>canvas.width){
+        movingBox.startingX = canvas.width-movingBox.width;
+        alert("You cannot move beyond the boundary of the canvas");
+      }
+      else if(movingBox.startingX<=0){
+        movingBox.startingX = 0;
+        alert("You cannot move beyond the boundary of the canvas");
+      }
+      if(movingBox.startingY+movingBox.height>canvas.height){
+        movingBox.startingY = canvas.height-movingBox.height;
+        alert("You cannot move beyond the boundary of the canvas");
+      }
+      else if(movingBox.startingY<=0){
+        movingBox.startingY = 0;
+        alert("You cannot move beyond the boundary of the canvas");
+      }
+    
+
+       	ctx.beginPath();
+    
+        ctx.strokeStyle = movingBox.borderColor;
+        ctx.rect(movingBox.startingX,movingBox.startingY,movingBox.width,movingBox.height);
+        ctx.stroke();
+        ctx.fillStyle = movingBox.color;
+        ctx.fill();
+    }
+
+    window.onload = function(){
+    	drawBox();
+    }
+     
+
+
+
+
+
+
+
+
+ </script>
+
+</body>
+</html>
