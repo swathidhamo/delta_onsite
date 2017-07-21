@@ -48,17 +48,19 @@
      border: 2px solid black;
      border-radius: 6px 6px 6px 6px;
      padding: 15px 15px 15px 15px;
-     margin right: 550px;
+     margin right: 250px;
      margin-top: 150px;
-     margin-left: 410px;
-     width: 450px;
-     font-size: 20px;
+     margin-left: 50px;
+     width: 300px;
+     font-size: 15px;
    }
 
    body {
     font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
-    color: #404040;
-    background: #f7e5e3;
+    color: #404040; 
+    background: url("http://draxtargames.com/dgwp/wp-content/uploads/2015/11/Auction-gavel.jpg");
+   
+
 
    }
    .jumbotron{

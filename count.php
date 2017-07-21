@@ -7,6 +7,13 @@
 
 	  ?>
 	<title>Timer</title>
+  <style type="text/css">
+   body{
+    background: url("http://draxtargames.com/dgwp/wp-content/uploads/2015/11/Auction-gavel.jpg");
+   }
+
+
+  </style>
 </head>
 <body>
 	<div id = "contents"></div>

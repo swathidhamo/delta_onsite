@@ -5,10 +5,21 @@
 	<?php
 
 	?>
+<style type="text/css">
+  #bid{
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px 10px 10px;
+  }
+
+
+
+
+</style>
 </head>
+
 <body>
 <form method = "POST">
-  Bid: <input type = "number" name = "bid" id = "bid" >
+  <p id = "bid">Bid: <input type = "number" name = "bid" id = "bid" ></p>
 
   <div id = "content"></div>
 
