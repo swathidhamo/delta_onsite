@@ -3,20 +3,6 @@
 	<title>Auction forum</title>
 
 	<?php
-     require("connect.php");
-     //require("time.php");
-     $ne = 0;
-     setcookie("bid",$ne);
-     if(!empty($_SESSION["username"])){
-      echo time();
-     }
-    
-
-
-
-
-
-
 
 	?>
 </head>

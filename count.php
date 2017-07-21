@@ -2,14 +2,14 @@
 <head>
 	<?php
      //session_start();
-     require("time.php");
-
+     require("index.php");
+    
 
 	  ?>
 	<title>Timer</title>
 </head>
 <body>
-	<div id = "content"></div>
+	<div id = "contents"></div>
   <script type="text/javascript">
    function change_time(){
 
@@ -39,7 +39,7 @@
          console.log(data);
 
          
-         	document.getElementById("content").innerHTML = "<p>"+data+"</p>";
+         	document.getElementById("contents").innerHTML = "<p>"+data+"</p>";
         
           //change_time();
 

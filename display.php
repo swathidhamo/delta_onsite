@@ -13,7 +13,7 @@
       $value = 100;
 
       
-         $query = "SELECT value,username FROM bid";
+         $query = "SELECT value,username,time_limit,time FROM bid";
          $sql = mysqli_query($link,$query);
          $rows = mysqli_num_rows($sql);
          if($rows==0){
@@ -27,8 +27,9 @@
          else if($rows>0){
          while($result = mysqli_fetch_assoc($sql)){
           $emparray = array();
+          if($result["time"]<=$result["time_limit"]){
           
-             if($bid>$result["value"]){
+             if($bid>$result["value"]&&$result["time_limit"]>$result["time"]){
                             $val = $result["value"];
               $query_add = "UPDATE bid SET username = '$username', item = '$item', value = '$bid' WHERE value = '$val'" ;
               $result_add = mysqli_query($link,$query_add);
@@ -36,7 +37,7 @@
               $emparray[] = $username;
 
              }
-             else{
+             else if($result["time_limit"]>$result["time"]){
               $emparray[] = $result["value"];
               $emparray[] = $result["username"];
              }
@@ -45,6 +46,7 @@
                 file_put_contents("result.json",$ther);
            }
         }
+      }
   
 
 

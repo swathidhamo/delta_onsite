@@ -24,7 +24,7 @@
       	  	$username = mysqli_real_escape_string($link,$_POST["username"]);
             $username = stripslashes($username);
             $_SESSION["username"] = $username;
-            header("Location: index.php ");
+            header("Location: count.php ");
       	 }
 
 
